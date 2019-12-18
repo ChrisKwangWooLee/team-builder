@@ -18,15 +18,37 @@ function App() {
   }
 ]);
 
+const addNewForm = currentForm => {
+  const newForm = {
+    name: currentForm.name,
+    email: currentForm.email,
+    role: currentForm.role
+  }
+
+  setList(
+    [
+      ...list,
+      newForm
+    ]
+  )
+}
+
+// Stretch
+  const [memberToEdit, setMemberToEdit] = useState({
+    name: "",
+    email: "",
+    role: ""
+  });
+
   return (
     <div className="App">
       <div className="TeamBuilderContainer">
         <h1>Team Builder</h1>
-        <Form list={list} setList={setList}/>
+        <Form addNewForm={addNewForm} memberToEdit={memberToEdit} setMemberToEdit={setMemberToEdit}/>
       </div>
 
       <hr/>
-      
+
       <div className="results">
         <h2>Our team members</h2>
         {list.map( (member, index) => (
@@ -35,7 +57,7 @@ function App() {
                   <CardBody>
                     <CardTitle>{member.role}</CardTitle>
                     <CardText>{member.email}</CardText>
-                    <Button color="danger">Delete</Button>
+                    <Button color="primary">Edit</Button>
                   </CardBody>
                 </Card>
         ))}

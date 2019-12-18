@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 function Form (props) {
-    const {setList, list} = props;
+    const {addNewForm, memberToEdit, setMemberToEdit} = props;
 
     const [currentData, setCurrentData] = useState({
         name: "",
@@ -16,25 +16,16 @@ function Form (props) {
         })
     }
 
-    const handleSubmit = event => {
+    const submitForm = event => {
         event.preventDefault();
-        
-        setList([
-            ...list,
-            currentData
-          ])
-        
-        setCurrentData({
-            name: "",
-            email: "",
-            role: ""
-        })
+        addNewForm(currentData);
     }
+    
 
     console.log(currentData);
 
     return(
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={submitForm}>
             <label>
             Name: <input onChange={handleChange} 
                          type="text" 
