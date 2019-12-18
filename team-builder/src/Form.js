@@ -1,13 +1,19 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 function Form (props) {
-    const {addNewForm, memberToEdit, setMemberToEdit} = props;
+    const {addNewForm, memberToEdit, editMember} = props;
 
     const [currentData, setCurrentData] = useState({
+        id: "",
         name: "",
         email: "",
         role: ""
     })
+
+    // Stretch
+    useEffect(()=> {
+        setCurrentData(memberToEdit)
+    }, [memberToEdit])
 
     const handleChange = event => {
         setCurrentData({
@@ -18,12 +24,22 @@ function Form (props) {
 
     const submitForm = event => {
         event.preventDefault();
-        addNewForm(currentData);
+
+        // Stretch - Step 4
+        let isEditing = !(Object.keys(memberToEdit).length === 0);
+        if(isEditing){
+            editMember(currentData);
+        } else {
+            addNewForm(currentData);           
+        }
+
+        setCurrentData({
+            name: "",
+            email: "",
+            role: ""
+        })
     }
     
-
-    console.log(currentData);
-
     return(
         <form onSubmit={submitForm}>
             <label>
@@ -45,12 +61,12 @@ function Form (props) {
             </label><br/>
             
             <label>
-            Role: <select name="role" onChange={handleChange}>
-                <option/>
-                <option>Backend Engineer</option>
-                <option>Frontend Engineer</option>
-                <option>Designer</option>
-                </select> 
+            Role: <select name="role" onChange={handleChange} value={currentData.role}>
+                        <option></option>
+                        <option>backend engineer</option>
+                        <option>frontend engineer</option>
+                        <option>designer</option>
+                  </select> 
             </label><br/>
             
             <label>

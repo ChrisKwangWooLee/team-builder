@@ -1,28 +1,32 @@
 import React, {useState} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Form from './Form';
-import { Card, Button, CardHeader, CardFooter, CardBody, CardTitle, CardText } from 'reactstrap';
+import { Card, Button, CardHeader, CardBody, CardTitle, CardText } from 'reactstrap';
 
 function App() {
 
   const [list, setList] = useState([{
+    id: 1,
     name: "Chris",
     email: "kl467@cornell.edu",
     role: "frontend engineer"
   },
   {
+    id: 2,
     name: "John",
     email: "johndoe@gmail.com",
     role: "backend engineer"  
   }
 ]);
+console.log(list);
 
-const addNewForm = currentForm => {
+const addNewForm = currentData => {
+  console.log('Adding...')
   const newForm = {
-    name: currentForm.name,
-    email: currentForm.email,
-    role: currentForm.role
+    id: Date.now(),
+    name: currentData.name,
+    email: currentData.email,
+    role: currentData.role
   }
 
   setList(
@@ -33,18 +37,35 @@ const addNewForm = currentForm => {
   )
 }
 
-// Stretch
-  const [memberToEdit, setMemberToEdit] = useState({
-    name: "",
-    email: "",
-    role: ""
-  });
+// Stretch - Step 3
+  const [memberToEdit, setMemberToEdit] = useState({});
+  console.log(memberToEdit);
+
+  const handleEdit = member => {
+    setMemberToEdit(member)
+  }
+
+  // Stretch - Step 4
+  const editMember = currentData => {
+
+    console.log("Editing...")
+    const newList = list.map(member => {
+      if (member.id === currentData.id) {
+        return currentData
+      } else {
+        return member
+      }
+    });
+
+    setList(newList);
+    setMemberToEdit({});
+  }
 
   return (
     <div className="App">
       <div className="TeamBuilderContainer">
         <h1>Team Builder</h1>
-        <Form addNewForm={addNewForm} memberToEdit={memberToEdit} setMemberToEdit={setMemberToEdit}/>
+        <Form addNewForm={addNewForm} memberToEdit={memberToEdit} editMember={editMember}/>
       </div>
 
       <hr/>
@@ -57,7 +78,7 @@ const addNewForm = currentForm => {
                   <CardBody>
                     <CardTitle>{member.role}</CardTitle>
                     <CardText>{member.email}</CardText>
-                    <Button color="primary">Edit</Button>
+                    <Button onClick={() => handleEdit(member)} color="primary">Edit</Button>
                   </CardBody>
                 </Card>
         ))}
